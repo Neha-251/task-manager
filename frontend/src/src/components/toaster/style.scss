@@ -1,0 +1,37 @@
+.Toaster {
+  position: fixed;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  height: 100px;
+  width: 500px;
+  top: 10px;
+  left: calc(50% - 250px);
+
+  .toaster-content {
+    position: relative;
+    height: 100%;
+    color: white;
+    width: 100%;
+    padding: 5px;
+
+    .toaster-cross {
+      right: 3px;
+      top: 3px;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    &.toaster-error {
+      background-color: rgb(175, 80, 80);
+    }
+
+    &.toaster-success {
+      background-color: rgb(76, 148, 94);
+    }
+
+    p {
+      font-weight: 600;
+      font-size: 18px;
+      margin: 35px auto;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+$color-primary-light: #053b50;
+$color-secondary-light: #176b87;
+$color-bg-primary-light: #eeeeee;
+$color-bg-secondary-light: #64ccc5;
+
+$color-primary-dark: #a5d7e8;
+$color-secondary-dark: #576cbc;
+$color-bg-primary-dark: #0b2447;
+$color-bg-secondary-dark: #19376d;
+
+.workspaces {
+  margin: 50px 0;
+  display: flex;
+  gap: 20px;
+
+  .workspace {
+    width: 400px;
+    height: 200px;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: $color-primary-light;
+    color: $color-bg-primary-light;
+  }
+}

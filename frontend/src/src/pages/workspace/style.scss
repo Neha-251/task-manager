@@ -1,0 +1,71 @@
+$color-primary-light: #053b50;
+$color-secondary-light: #176b87;
+$color-bg-primary-light: #eeeeee;
+$color-bg-secondary-light: #64ccc5;
+
+$color-primary-dark: #a5d7e8;
+$color-secondary-dark: #576cbc;
+$color-bg-primary-dark: #0b2447;
+$color-bg-secondary-dark: #19376d;
+
+nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  background-color: rgba(66, 134, 112, 0.61);
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    padding: 2px;
+    margin-right: 10px;
+  }
+
+  .nav-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-btns {
+    display: flex;
+    gap: 10px;
+    height: 35px;
+    padding: 8px;
+  }
+}
+
+.AllTrees {
+  display: flex;
+  overflow-x: auto;
+  padding: 20px;
+  gap: 10px;
+
+  .Tree {
+    width: 300px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    height: 100%;
+    overflow-y: auto;
+
+    h3 {
+      text-align: center;
+      color: $color-bg-primary-light;
+      background-color: $color-secondary-light;
+      padding: 10px;
+      margin: 0;
+    }
+
+    .create-card-btn {
+      width: 100%;
+    }
+  }
+}

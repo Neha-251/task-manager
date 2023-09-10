@@ -14,7 +14,6 @@ const User = () => {
 
   useEffect(() => {
     if (userId) navigate("/");
-    console.log("🚀 ~ file: user.js:17 ~ useEffect ~ userId:", userId);
   }, [userId]);
 
   const handleSubmit = (e, userDetails) => {

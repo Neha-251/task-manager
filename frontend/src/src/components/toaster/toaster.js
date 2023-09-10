@@ -8,7 +8,6 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const Toaster = () => {
   const showToaster = useSelector((state) => state.data.showToaster);
   const { type, message } = useSelector((state) => state.data.toasterError);
-  console.log("🚀 ~ file: toaster.js:10 ~ Toaster ~ message:", message);
   const dispatch = useDispatch();
 
   useEffect(() => {

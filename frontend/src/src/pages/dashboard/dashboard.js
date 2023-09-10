@@ -6,12 +6,14 @@ import {
   createWorkspace,
   getAllWorkspaces,
 } from "../../redux/actions/workspace.action";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [showModal, set_showModal] = useState(false);
   const userId = useSelector((state) => state.data.userId);
   const allWorkspaces = useSelector((state) => state.data.allWorkspaces);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleCreateWorkspace = (workspaceName, description) => {
     const data = {
@@ -28,6 +30,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (userId) dispatch(getAllWorkspaces(userId));
   }, [userId, dispatch]);
+
+  const handleNavigate = (workspaceId) => {
+    navigate(`/workspace/${workspaceId}`);
+  };
 
   return (
     <div>
@@ -48,7 +54,11 @@ const Dashboard = () => {
       <div className="workspaces">
         {allWorkspaces?.map((workspace) => {
           return (
-            <div className="card workspace" key={workspace._id}>
+            <div
+              className="card workspace"
+              key={workspace._id}
+              onClick={() => handleNavigate(workspace._id)}
+            >
               <h2>{workspace.title}</h2>
               <p>{workspace.description}</p>
             </div>

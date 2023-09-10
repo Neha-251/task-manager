@@ -1,11 +1,19 @@
+import { CREATE_NEW_CARD, GET_ALL_CARDS } from "../constants/card.constants";
 import {
   SHOW_LOADER,
   SHOW_TOASTER,
   THEME,
   TOASTER_ERROR,
 } from "../constants/common.action";
+import { CREATE_NEW_TREE, GET_ALL_TREES } from "../constants/trees.constants";
 import { USER_DETAILS, USER_ID } from "../constants/user.constant";
-import { GET_ALL_WORKSPACES } from "../constants/workspace.constants";
+import {
+  CREATE_NEW_BADGE,
+  CURRENT_WORKSPACE,
+  GET_ALL_BADGES,
+  GET_ALL_WORKSPACES,
+  UPDATE_BADGE,
+} from "../constants/workspace.constants";
 
 const initialState = {
   theme: "Light",
@@ -15,6 +23,10 @@ const initialState = {
   userId: "",
   userDetails: {},
   allWorkspaces: [],
+  currentWorkspace: {},
+  allTrees: [],
+  allCards: [],
+  allBadges: [],
 };
 
 export const MainReducer = (state = initialState, { type, payload }) => {
@@ -33,6 +45,77 @@ export const MainReducer = (state = initialState, { type, payload }) => {
       return { ...state, userDetails: payload, showLoader: false };
     case GET_ALL_WORKSPACES:
       return { ...state, allWorkspaces: payload, showLoader: false };
+    case CURRENT_WORKSPACE:
+      return { ...state, currentWorkspace: payload, showLoader: false };
+    case GET_ALL_TREES:
+      return { ...state, allTrees: payload, showLoader: false };
+    case CREATE_NEW_TREE:
+      return {
+        ...state,
+        allTrees: [...state.allTrees, payload],
+        showLoader: false,
+      };
+    case GET_ALL_CARDS:
+      const cards = state.allCards;
+
+      const cardsWithTreeId = cards.filter(
+        (card) => card.treeId === payload.treeId
+      );
+
+      if (cardsWithTreeId) {
+        cardsWithTreeId.cards = payload.data;
+      } else {
+        cards.push({ treeId: payload.treeId, cards: payload.data });
+      }
+
+      return {
+        ...state,
+        allCards: cards,
+        showLoader: false,
+      };
+
+    case CREATE_NEW_CARD:
+      const _allCards = state.allCards;
+
+      _allCards.forEach((card) => {
+        if (card.treeId === payload.treeId) card.cards.push(payload.data._id);
+      });
+
+      return {
+        ...state,
+        allCards: _allCards,
+        showLoader: false,
+      };
+    case GET_ALL_BADGES:
+      return { ...state, allBadges: payload, showLoader: false };
+    case CREATE_NEW_BADGE:
+      return {
+        ...state,
+        allBadges: [...state.allBadges, payload],
+        showLoader: false,
+      };
+    case UPDATE_BADGE:
+      const _allBadges = state.allBadges;
+
+      const newBadges = [];
+      _allBadges.forEach((badge) => {
+        if (badge._id === payload._id) {
+          let newBadge = {
+            name: payload.name,
+            color: payload.color,
+            workspaceId: payload.workspaceId,
+          };
+          newBadges.push(newBadge);
+        } else {
+          newBadges.push(badge);
+        }
+      });
+
+      return {
+        ...state,
+        allBadges: newBadges,
+        showLoader: false,
+      };
     default:
       return state;
   }

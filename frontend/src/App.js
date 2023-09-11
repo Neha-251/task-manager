@@ -20,11 +20,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // fetch user details from localStorage
+    // fetch user details from
     // if get userDetails, save in redux
     // else navigate to user route
 
-    const userDetails = localStorage.getItem("userDetails");
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
     if (userDetails) {
       dispatch(setUserDetails(userDetails));

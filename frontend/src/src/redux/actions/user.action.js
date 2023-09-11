@@ -28,7 +28,7 @@ export const createUser = (userDetails) => (dispatch) => {
     .then((res) => {
       dispatch(setUserID(res.data.user._id));
       dispatch(setUserDetails(res.data.user));
-      localStorage.setItem("userDetails", res.data.user);
+      localStorage.setItem("userDetails", JSON.stringify(res.data.user));
       dispatch(
         setToasterError({
           type: "success",
@@ -55,7 +55,7 @@ export const LoginUser = (userDetails) => (dispatch) => {
     .then((res) => {
       dispatch(setUserID(res.data.user._id));
       dispatch(setUserDetails(res.data.user));
-      localStorage.setItem("userDetails", res.data.user);
+      localStorage.setItem("userDetails", JSON.stringify(res.data.user));
       dispatch(
         setToasterError({ type: "success", message: "Logged in successfully" })
       );

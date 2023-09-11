@@ -53,11 +53,14 @@ const Badge = () => {
     btnText: "Create Badge",
   });
 
+  const handleBadgeCreateBtnClick = () => {
+    set_modalDetails({ action: "create", btnText: "Create Badge" });
+    set_showInputModal(showInputModal ? false : true);
+  };
+
   return (
     <div className="Badge">
-      <button onClick={() => set_showInputModal(showInputModal ? false : true)}>
-        Create new Badge
-      </button>
+      <button onClick={handleBadgeCreateBtnClick}>Create new Badge</button>
 
       {showInputModal ? (
         <BadgeModal

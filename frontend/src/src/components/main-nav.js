@@ -27,7 +27,9 @@ const MainNav = () => {
       </div>
 
       <div className={showSubmenu ? "sub-menu-show" : "sub-menu-hidden"}>
-        <FontAwesomeIcon className="icon" icon={faHouse} />
+        <Link to="/">
+          <FontAwesomeIcon className="icon" icon={faHouse} />
+        </Link>
         <Link to="/user">
           {" "}
           <FontAwesomeIcon className="icon" icon={faUser} />{" "}

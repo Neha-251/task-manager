@@ -20,6 +20,19 @@ router.get("/get/all", async (req, res) => {
   }
 });
 
+router.get("/get/totalCards", async (req, res) => {
+  try {
+    const workspaceId = req.query.workspaceId;
+    const totalCards = await Card.find({
+      workspaceId: { $eq: workspaceId },
+    }).count();
+
+    return res.status(200).send({ totalCards });
+  } catch (err) {
+    return res.status(400).send({ error: err.message });
+  }
+});
+
 router.get("/get/single/:id", async (req, res) => {
   try {
     const card = await Card.findById(req.params.id).lean().exec();

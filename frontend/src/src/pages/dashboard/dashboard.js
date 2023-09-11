@@ -7,6 +7,8 @@ import {
   getAllWorkspaces,
 } from "../../redux/actions/workspace.action";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const [showModal, set_showModal] = useState(false);
@@ -36,7 +38,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <div className="Dashboard">
       {/* create new workspace */}
       <button onClick={() => set_showModal(true)}>Create New Workspace</button>
       {showModal ? (
@@ -61,6 +63,10 @@ const Dashboard = () => {
             >
               <h2>{workspace.title}</h2>
               <p>{workspace.description}</p>
+              <div className="icon-div">
+                <FontAwesomeIcon className="pencil-icon icon" icon={faPencil} />
+                <FontAwesomeIcon className="icon" icon={faTrash} />
+              </div>
             </div>
           );
         })}

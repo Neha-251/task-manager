@@ -8,6 +8,9 @@ $color-secondary-dark: #576cbc;
 $color-bg-primary-dark: #0b2447;
 $color-bg-secondary-dark: #19376d;
 
+.Dashboard {
+  padding: 20px;
+}
 .workspaces {
   margin: 50px 0;
   display: flex;
@@ -20,5 +23,25 @@ $color-bg-secondary-dark: #19376d;
     border-radius: 20px;
     background-color: $color-primary-light;
     color: $color-bg-primary-light;
+    position: relative;
+
+    .icon-div {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      gap: 5px;
+      visibility: hidden;
+    }
+
+    .icon {
+      font-size: 15px !important;
+    }
+
+    &:hover {
+      .icon-div {
+        visibility: visible;
+      }
+    }
   }
 }

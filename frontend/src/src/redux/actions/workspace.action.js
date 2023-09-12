@@ -6,11 +6,14 @@ import {
 } from "./common.action";
 import {
   CREATE_NEW_BADGE,
+  CREATE_WORKSPACE,
   CURRENT_WORKSPACE,
+  DELETE_WORKSPACE,
   GET_ALL_BADGES,
   GET_ALL_WORKSPACES,
   UPDATE_BADGE,
 } from "../constants/workspace.constants";
+import { DELETE_CARD } from "../constants/card.constants";
 
 export const setAllWorkspaces = (payload) => {
   return {
@@ -34,6 +37,7 @@ export const createWorkspace = (data) => (dispatch) => {
     .then((res) => {
       dispatch(setShowLoader(false));
 
+      dispatch({ type: CREATE_WORKSPACE, payload: res.data });
       dispatch(
         setToasterError({
           type: "success",
@@ -76,6 +80,22 @@ export const getCurrentWorkspace = (workspaceId) => (dispatch) => {
     .then((res) => {
       dispatch(setCurrentWorkspace(res.data));
       dispatch(setShowLoader(false));
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+    });
+};
+
+export const deleteWorkspace = (workspaceId) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .delete(`http://localhost:5000/workspaces/delete/${workspaceId}`)
+    .then((res) => {
+      dispatch(setShowLoader(false));
+      dispatch(setToasterError({ type: "success", message: res.data.message }));
+      dispatch(setShowToaster(true));
+      dispatch({ type: DELETE_WORKSPACE, payload: workspaceId });
     })
     .catch((err) => {
       dispatch(setShowLoader(false));

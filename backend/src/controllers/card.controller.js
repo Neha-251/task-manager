@@ -33,6 +33,20 @@ router.get("/get/totalCards", async (req, res) => {
   }
 });
 
+router.get("/get/lastCardId", async (req, res) => {
+  try {
+    const workspaceId = req.query.workspaceId;
+    const lastCard = await Card.getLastInsertedDocument
+      .find({ workspaceId: { $eq: workspaceId } })
+      .sort({ _id: -1 })
+      .limit(1);
+
+    return res.status(200).send({ lastCardId: lastCard.cardId });
+  } catch (err) {
+    return res.status(400).send({ error: err.message });
+  }
+});
+
 router.get("/get/single/:id", async (req, res) => {
   try {
     const card = await Card.findById(req.params.id).lean().exec();

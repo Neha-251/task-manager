@@ -1,6 +1,10 @@
 import axios from "axios";
 import { CREATE_NEW_TREE, GET_ALL_TREES } from "../constants/trees.constants";
-import { setShowLoader } from "./common.action";
+import {
+  setShowLoader,
+  setShowToaster,
+  setToasterError,
+} from "./common.action";
 
 export const setAllTrees = (payload) => {
   return {
@@ -29,14 +33,19 @@ export const createNewTree = (data) => (dispatch) => {
   axios
     .post("http://localhost:5000/trees/create", data)
     .then((res) => {
-      console.log("🚀 ~ file: trees.actions.js:35 ~ .then ~ res:", res);
-
       dispatch(setShowLoader(false));
+      dispatch(
+        setToasterError({
+          type: "success",
+          message: "Tree created successfully",
+        })
+      );
+      dispatch(setShowToaster(true));
 
-      return {
+      dispatch({
         type: CREATE_NEW_TREE,
         payload: res.data,
-      };
+      });
     })
     .catch((err) => {
       dispatch(setShowLoader(false));

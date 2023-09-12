@@ -3,8 +3,9 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   height: 100px;
   width: 500px;
-  top: 10px;
+  top: 1px;
   left: calc(50% - 250px);
+  z-index: 9999;
 
   .toaster-content {
     position: relative;

@@ -1,3 +1,13 @@
+$color-primary-light: #053b50;
+$color-secondary-light: #176b87;
+$color-bg-primary-light: #eeeeee;
+$color-bg-secondary-light: #64ccc5;
+
+$color-primary-dark: #a5d7e8;
+$color-secondary-dark: #576cbc;
+$color-bg-primary-dark: #0b2447;
+$color-bg-secondary-dark: #19376d;
+
 .Card {
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.1) 0px 0px 8px;
@@ -8,9 +18,28 @@
   gap: 5px;
   cursor: grab;
 
-  .pencil-icon {
-    display: none;
-    cursor: pointer;
+  &:hover {
+    .icon-div {
+      visibility: visible;
+    }
+  }
+
+  .icon-div {
+    right: 20px;
+    top: 20px;
+    display: flex;
+    gap: px;
+    visibility: hidden;
+
+    .icon {
+      font-size: 12px !important;
+      color: $color-primary-light !important;
+      display: block;
+      cursor: pointer;
+    }
+    .pencil-icon {
+      display: none;
+    }
   }
 
   &:hover {

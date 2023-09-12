@@ -9,7 +9,7 @@ const InputModal = ({ placeholder, btnText, onBtnClick }) => {
     <div className="Modal">
       <div className="Modal-Sub ">
         <FontAwesomeIcon
-          onClick={(e) => onBtnClick(e, "close")}
+          onClick={() => onBtnClick("close")}
           className="cross modal-cross"
           icon={faXmark}
         />

@@ -4,6 +4,7 @@ import "./dashboard.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createWorkspace,
+  deleteWorkspace,
   getAllWorkspaces,
 } from "../../redux/actions/workspace.action";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +38,11 @@ const Dashboard = () => {
     navigate(`/workspace/${workspaceId}`);
   };
 
+  const handleDeleteWorkspace = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteWorkspace(id));
+  };
+
   return (
     <div className="Dashboard">
       {/* create new workspace */}
@@ -65,7 +71,11 @@ const Dashboard = () => {
               <p>{workspace.description}</p>
               <div className="icon-div">
                 <FontAwesomeIcon className="pencil-icon icon" icon={faPencil} />
-                <FontAwesomeIcon className="icon" icon={faTrash} />
+                <FontAwesomeIcon
+                  onClick={(e) => handleDeleteWorkspace(e, workspace._id)}
+                  className="icon"
+                  icon={faTrash}
+                />
               </div>
             </div>
           );

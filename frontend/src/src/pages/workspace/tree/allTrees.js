@@ -3,6 +3,7 @@ import AllCards from "../card/allCards";
 import {
   createNewCard,
   getAllCards,
+  getLastCardId,
   getTotalCards,
 } from "../../../redux/actions/card.actions";
 import { useEffect } from "react";
@@ -11,21 +12,25 @@ const AllTrees = () => {
   const allTrees = useSelector((state) => state.data.allTrees);
   const currentWorkspace = useSelector((state) => state.data.currentWorkspace);
   const totalCards = useSelector((state) => state.data.totalCards);
+  const lastCardId = useSelector((state) => state.data.lastCardId);
   const dispatch = useDispatch();
 
-  const fetchTotalCards = () => {
+  const fetchTotalCardsANdLastCardId = () => {
     dispatch(getTotalCards(currentWorkspace?._id));
+    getLastCardId(currentWorkspace?._id);
   };
 
   useEffect(() => {
-    if (currentWorkspace?._id) fetchTotalCards();
+    if (currentWorkspace?._id) {
+      fetchTotalCardsANdLastCardId();
+    }
   }, [currentWorkspace]);
 
   const handleCreateNewCard = (treeId) => {
-    if (totalCards >= 0) {
+    if (lastCardId >= 0) {
       const cardDetails = {
         title: "Title",
-        cardId: totalCards + 1,
+        cardId: lastCardId + 1,
         treeId: treeId,
         workspaceId: currentWorkspace?._id,
       };

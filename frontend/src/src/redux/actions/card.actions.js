@@ -1,10 +1,16 @@
 import axios from "axios";
 import {
   CREATE_NEW_CARD,
+  DELETE_CARD,
   GET_ALL_CARDS,
+  GET_LAST_CARD_ID,
   GET_TOTAL_CARDS,
 } from "../constants/card.constants";
-import { setShowLoader } from "./common.action";
+import {
+  setShowLoader,
+  setShowToaster,
+  setToasterError,
+} from "./common.action";
 
 export const getAllCards = (workspaceId, treeId) => (dispatch) => {
   dispatch(setShowLoader(true));
@@ -56,6 +62,45 @@ export const getTotalCards = (workspaceId) => (dispatch) => {
       dispatch({
         type: GET_TOTAL_CARDS,
         payload: res.data.totalCards,
+      });
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+    });
+};
+
+export const getLastCardId = (workspaceId) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .get(
+      `http://localhost:5000/cards/get/lastCardId?workspaceId=${workspaceId}`
+    )
+    .then((res) => {
+      dispatch(setShowLoader(false));
+
+      dispatch({
+        type: GET_LAST_CARD_ID,
+        payload: res.data.lastCardId,
+      });
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+    });
+};
+
+export const deleteCard = (id, treeId) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .delete(`http://localhost:5000/cards/delete/${id}`)
+    .then((res) => {
+      dispatch(setShowLoader(false));
+      dispatch(setToasterError({ type: "success", message: res.data.message }));
+      dispatch(setShowToaster(true));
+      dispatch({
+        type: DELETE_CARD,
+        payload: { id, treeId },
       });
     })
     .catch((err) => {

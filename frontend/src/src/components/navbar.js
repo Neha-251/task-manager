@@ -12,8 +12,7 @@ const Navbar = ({ title, description }) => {
 
   const handleCreateTree = (action, inputText) => {
     if (!workspaceId) return;
-    if (action === "cancel") set_shouldOpenModal(false);
-    else {
+    if (action === "Create") {
       dispatch(
         createNewTree({
           name: inputText,
@@ -22,6 +21,7 @@ const Navbar = ({ title, description }) => {
         })
       );
     }
+    set_shouldOpenModal(false);
   };
 
   return (

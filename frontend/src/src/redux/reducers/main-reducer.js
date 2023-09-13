@@ -21,6 +21,7 @@ import {
   GET_ALL_BADGES,
   GET_ALL_WORKSPACES,
   UPDATE_BADGE,
+  UPDATE_WORKSPACE,
 } from "../constants/workspace.constants";
 
 const initialState = {
@@ -71,6 +72,26 @@ export const MainReducer = (state = initialState, { type, payload }) => {
         ),
         showLoader: false,
       };
+    case UPDATE_WORKSPACE: {
+      const _allWorkspaces = state.allWorkspaces;
+
+      let newAllWorkspaces = [];
+      for (let i = 0; i < _allWorkspaces.length; i++) {
+        const workspace = _allWorkspaces[i];
+
+        if (workspace._id === payload._id) {
+          newAllWorkspaces.push(payload);
+        } else {
+          newAllWorkspaces.push(workspace);
+        }
+      }
+
+      return {
+        ...state,
+        allWorkspaces: newAllWorkspaces,
+        showLoader: false,
+      };
+    }
     case GET_ALL_TREES:
       return { ...state, allTrees: payload, showLoader: false };
     case CREATE_NEW_TREE:

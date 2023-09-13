@@ -4,9 +4,12 @@ import "./style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { deleteCard } from "../../../redux/actions/card.actions";
+import Card from "./card";
 
 const AllCards = ({ treeId }) => {
   const [cards, setCards] = useState([]);
+  const [lastEditedCard, set_lastEditedCard] = useState();
+  const [showCardModal, set_showCardModal] = useState(false);
   const dispatch = useDispatch();
   const allCards = useSelector((state) => state.data.allCards);
 
@@ -22,13 +25,22 @@ const AllCards = ({ treeId }) => {
     dispatch(deleteCard(id, treeId));
   };
 
+  const handleCardClick = (card) => {
+    set_lastEditedCard(card);
+    set_showCardModal(true);
+  };
+
   return (
     <div className="Cards">
       {cards?.map((card) => {
         return (
-          <div className="Card" key={card._id}>
+          <div
+            className="card"
+            key={card._id}
+            onClick={() => handleCardClick(card)}
+          >
             <div className="card-header">
-              <p>#{card.cardId}</p>
+              <div>badges</div>
               <div className="icon-div">
                 <FontAwesomeIcon className="icon pencil-icon" icon={faPencil} />
                 <FontAwesomeIcon
@@ -39,13 +51,19 @@ const AllCards = ({ treeId }) => {
               </div>
             </div>
             <div className="card-content">
+              <p>#{card.cardId}</p>
               <h5>{card.title}</h5>
-              <div>badges</div>
-              <div>members</div>
             </div>
           </div>
         );
       })}
+
+      {showCardModal ? (
+        <Card
+          card={lastEditedCard}
+          onBtnClick={() => set_showCardModal(false)}
+        />
+      ) : null}
     </div>
   );
 };

@@ -2,10 +2,10 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-const CreateWorkspaceModal = (props) => {
-  const { onBtnClick } = props;
-  const [workspaceName, setNewWorkspaceName] = useState("New Workspace");
-  const [description, set_description] = useState("");
+const ModalWithInputTextArea = (props) => {
+  const { onBtnClick, btnText, defName, defDesc } = props;
+  const [workspaceName, setNewWorkspaceName] = useState(defName);
+  const [description, set_description] = useState(defDesc);
 
   return (
     <div className="Modal">
@@ -33,9 +33,9 @@ const CreateWorkspaceModal = (props) => {
         </div>
         <div className="Modal-btn">
           <button
-            onClick={(e) => onBtnClick(e, "create", workspaceName, description)}
+            onClick={(e) => onBtnClick(e, btnText, workspaceName, description)}
           >
-            Create
+            {btnText}
           </button>
           <button onClick={(e) => onBtnClick(e, "cancel")}>Cancel</button>
         </div>
@@ -44,4 +44,4 @@ const CreateWorkspaceModal = (props) => {
   );
 };
 
-export default CreateWorkspaceModal;
+export default ModalWithInputTextArea;

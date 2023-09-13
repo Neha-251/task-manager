@@ -12,8 +12,8 @@ import {
   GET_ALL_BADGES,
   GET_ALL_WORKSPACES,
   UPDATE_BADGE,
+  UPDATE_WORKSPACE,
 } from "../constants/workspace.constants";
-import { DELETE_CARD } from "../constants/card.constants";
 
 export const setAllWorkspaces = (payload) => {
   return {
@@ -42,6 +42,35 @@ export const createWorkspace = (data) => (dispatch) => {
         setToasterError({
           type: "success",
           message: "Workspace created successfully",
+        })
+      );
+      dispatch(setShowToaster(true));
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+      dispatch(
+        setToasterError({
+          type: "error",
+          message: err.response.data.message,
+        })
+      );
+      dispatch(setShowToaster(true));
+    });
+};
+
+export const updateWorkspace = (workspaceId, data) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .patch(`http://localhost:5000/workspaces/update/${workspaceId}`, data)
+    .then((res) => {
+      dispatch(setShowLoader(false));
+
+      dispatch({ type: UPDATE_WORKSPACE, payload: res.data });
+      dispatch(
+        setToasterError({
+          type: "success",
+          message: "Workspace updated successfully",
         })
       );
       dispatch(setShowToaster(true));

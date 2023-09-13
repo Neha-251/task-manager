@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import CreateWorkspaceModal from "../../components/create-workspace-modal";
+import ModalWithInputTextArea from "../../components/modal-with-input-text-area";
 import "./dashboard.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createWorkspace,
   deleteWorkspace,
   getAllWorkspaces,
+  updateWorkspace,
 } from "../../redux/actions/workspace.action";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +31,15 @@ const Dashboard = () => {
     set_showModal(false);
   };
 
+  const handleEditWorkspace = (workspaceName, workspaceDescription) => {
+    const data = {
+      title: workspaceName,
+      description: workspaceDescription,
+    };
+    dispatch(updateWorkspace(lastClickedWorkspaceId, data));
+    set_showModal(false);
+  };
+
   useEffect(() => {
     if (userId) dispatch(getAllWorkspaces(userId));
   }, [userId, dispatch]);
@@ -43,17 +53,49 @@ const Dashboard = () => {
     dispatch(deleteWorkspace(id));
   };
 
+  const [modalDetails, set_modalDetails] = useState({
+    defName: "",
+    defDesc: "",
+    btnText: "",
+  });
+  const [lastClickedWorkspaceId, set_lastClickedWorkspaceId] = useState();
+
+  const handleEditBtnClick = (e, workspace) => {
+    e.stopPropagation();
+    set_modalDetails({
+      defName: workspace.title,
+      defDesc: workspace.description,
+      btnText: "Edit",
+    });
+    set_showModal(true);
+    set_lastClickedWorkspaceId(workspace._id);
+  };
+
+  const handleCreateBtnClick = () => {
+    set_modalDetails({
+      defName: "New Workspace",
+      defDesc: "this is new workspace",
+      btnText: "Create",
+    });
+    set_showModal(true);
+  };
+
   return (
     <div className="Dashboard">
       {/* create new workspace */}
-      <button onClick={() => set_showModal(true)}>Create New Workspace</button>
+      <button onClick={handleCreateBtnClick}>Create New Workspace</button>
       {showModal ? (
-        <CreateWorkspaceModal
+        <ModalWithInputTextArea
           onBtnClick={(e, action, workspaceName, description) => {
-            if (action === "create")
+            if (action === "Create")
               handleCreateWorkspace(workspaceName, description);
-            else set_showModal(false);
+            else if (action === "Edit") {
+              handleEditWorkspace(workspaceName, description);
+            } else set_showModal(false);
           }}
+          btnText={modalDetails.btnText}
+          defName={modalDetails.defName}
+          defDesc={modalDetails.defDesc}
         />
       ) : null}
 
@@ -70,7 +112,11 @@ const Dashboard = () => {
               <h2>{workspace.title}</h2>
               <p>{workspace.description}</p>
               <div className="icon-div">
-                <FontAwesomeIcon className="pencil-icon icon" icon={faPencil} />
+                <FontAwesomeIcon
+                  onClick={(e) => handleEditBtnClick(e, workspace)}
+                  className="pencil-icon icon"
+                  icon={faPencil}
+                />
                 <FontAwesomeIcon
                   onClick={(e) => handleDeleteWorkspace(e, workspace._id)}
                   className="icon"

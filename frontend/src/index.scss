@@ -205,10 +205,11 @@ $color-bg-secondary-dark: #19376d;
     .Modal-Sub {
       background-color: $color-bg-primary-light;
       min-height: 20vh;
-      min-width: 50vw;
+      min-width: 40vw;
       position: relative;
       display: flex;
       flex-direction: column;
+      border-radius: 10px;
 
       .modal-cross {
         position: absolute;

@@ -15,7 +15,7 @@ const LoginForm = ({ mode, onSubmit }) => {
   };
 
   return (
-    <form>
+    <form className="text-center">
       <input
         type="text"
         placeholder="John Doe"

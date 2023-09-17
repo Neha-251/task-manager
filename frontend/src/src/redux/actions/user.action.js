@@ -38,7 +38,6 @@ export const createUser = (userDetails) => (dispatch) => {
       dispatch(setShowToaster(true));
     })
     .catch((err) => {
-      console.log(err.response.data.message);
       dispatch(setShowLoader(false));
       dispatch(
         setToasterError({ type: "error", message: err.response.data.message })
@@ -51,7 +50,10 @@ export const LoginUser = (userDetails) => (dispatch) => {
   dispatch(setShowLoader(true));
 
   axios
-    .post("http://localhost:5000/users/login", userDetails)
+    .post(
+      "https://task-manager-backend-teal.vercel.app/users/login",
+      userDetails
+    )
     .then((res) => {
       dispatch(setUserID(res.data.user._id));
       dispatch(setUserDetails(res.data.user));

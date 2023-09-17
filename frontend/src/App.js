@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import { setUserDetails, setUserID } from "./src/redux/actions/user.action";
 import Workspace from "./src/pages/workspace/workspace";
 import Badge from "./src/pages/badge/badge";
+import Card from "./src/pages/workspace/card/card";
+import UserDetails from "./src/pages/user/user-details";
 
 function App() {
   const showLoader = useSelector((state) => state.data.showLoader);
@@ -44,12 +46,14 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Dashboard />}></Route>
         <Route exact path="/user" element={<User />}></Route>
+        <Route exact path="/userDetails" element={<UserDetails />}></Route>
         <Route
           exact
           path="/workspace/:workspaceId"
           element={<Workspace />}
         ></Route>
         <Route exact path="/badge" element={<Badge />}></Route>
+        <Route exact path="/card/:id" element={<Card />}></Route>
       </Routes>
     </>
   );

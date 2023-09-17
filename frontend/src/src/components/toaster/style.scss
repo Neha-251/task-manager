@@ -12,21 +12,22 @@
     height: 100%;
     color: white;
     width: 100%;
-    padding: 5px;
+    padding: 5px 10px;
+    border-radius: 10px;
 
     .toaster-cross {
-      right: 3px;
-      top: 3px;
+      right: 8px;
+      top: 8px;
       position: absolute;
       cursor: pointer;
     }
 
     &.toaster-error {
-      background-color: rgb(175, 80, 80);
+      background-color: rgb(139, 57, 57);
     }
 
     &.toaster-success {
-      background-color: rgb(76, 148, 94);
+      background-color: rgb(25 119 48);
     }
 
     p {

@@ -13,7 +13,7 @@ const User = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId) navigate("/");
+    if (userId) navigate("/userDetails");
   }, [userId]);
 
   const handleSubmit = (e, userDetails) => {

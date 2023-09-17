@@ -31,15 +31,13 @@ const Navbar = ({ title, description }) => {
         <p>{description}</p>
       </div>
 
-      <div className="nav-btns">
+      <div className="nav-btns " style={{ marginRight: "10px" }}>
         <button onClick={() => set_shouldOpenModal(true)}>
           Create New Tree
         </button>
         <Link to="/badge">
           <button>Badges</button>
         </Link>
-        <button>Filters</button>
-        <button>Notifications</button>
       </div>
 
       {shouldOpenModal ? (

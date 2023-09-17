@@ -2,8 +2,10 @@ import {
   CREATE_NEW_CARD,
   DELETE_CARD,
   GET_ALL_CARDS,
+  GET_CARD,
   GET_LAST_CARD_ID,
   GET_TOTAL_CARDS,
+  UPDATE_CARD,
 } from "../constants/card.constants";
 import {
   SHOW_LOADER,
@@ -11,7 +13,11 @@ import {
   THEME,
   TOASTER_ERROR,
 } from "../constants/common.action";
-import { CREATE_NEW_TREE, GET_ALL_TREES } from "../constants/trees.constants";
+import {
+  CREATE_NEW_TREE,
+  GET_ALL_TREES,
+  UPDATE_TREE,
+} from "../constants/trees.constants";
 import { USER_DETAILS, USER_ID } from "../constants/user.constant";
 import {
   CREATE_NEW_BADGE,
@@ -35,6 +41,7 @@ const initialState = {
   currentWorkspace: {},
   allTrees: [],
   allCards: [],
+  currentCard: {},
   allBadges: [],
   totalCards: 0,
   lastCardId: 0,
@@ -100,6 +107,22 @@ export const MainReducer = (state = initialState, { type, payload }) => {
         allTrees: [...state.allTrees, payload],
         showLoader: false,
       };
+    case UPDATE_TREE: {
+      const _allTrees = state.allTrees;
+      const newAllTrees = [];
+
+      _allTrees.forEach((tree) => {
+        if (tree._id === payload._id) {
+          newAllTrees.push(payload);
+        } else newAllTrees.push(tree);
+      });
+
+      return {
+        ...state,
+        allTrees: newAllTrees,
+        showLoader: false,
+      };
+    }
     case GET_ALL_CARDS: {
       const _allCards = state.allCards;
       let newAllCards = [];
@@ -150,11 +173,44 @@ export const MainReducer = (state = initialState, { type, payload }) => {
           { treeId: payload.treeId, data: [payload.data] },
         ];
       }
+
       return {
         ...state,
         allCards: newAllCards,
         totalCards: state.totalCards + 1,
-        lastCardId: state.lastCardId + 1,
+        lastCardId: +state.lastCardId + 1,
+        showLoader: false,
+      };
+    }
+    case UPDATE_CARD: {
+      const _allCards = state.allCards;
+      let newAllCards = [];
+
+      for (let i = 0; i < _allCards.length; i++) {
+        const card = _allCards[i];
+
+        if (card.treeId === payload.treeId) {
+          let newCardData = [];
+          for (let k = 0; k < card.data.length; i++) {
+            if (card.data[k]._id === payload.data._id) {
+              newCardData.push(payload.data);
+            } else {
+              newCardData.push(card.data[k]);
+            }
+          }
+
+          newAllCards.push({
+            ...payload,
+            data: newCardData,
+          });
+        } else {
+          newAllCards.push(card);
+        }
+      }
+
+      return {
+        ...state,
+        allCards: newAllCards,
         showLoader: false,
       };
     }
@@ -191,7 +247,9 @@ export const MainReducer = (state = initialState, { type, payload }) => {
     case GET_TOTAL_CARDS:
       return { ...state, totalCards: payload, showLoader: false };
     case GET_LAST_CARD_ID:
-      return { ...state, lastCardId: payload, showLoader: false };
+      return { ...state, lastCardId: +payload, showLoader: false };
+    case GET_CARD:
+      return { ...state, currentCard: payload, showLoader: false };
     case DELETE_CARD: {
       const _allCards = state.allCards.filter(
         (card) => card.treeId === payload.treeId

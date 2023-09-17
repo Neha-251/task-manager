@@ -1,77 +1,42 @@
 import { useDispatch, useSelector } from "react-redux";
-import AllCards from "../card/allCards";
 import {
   createNewCard,
   getAllCards,
   getLastCardId,
   getTotalCards,
 } from "../../../redux/actions/card.actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getAllBadges } from "../../../redux/actions/workspace.action";
+import Trees from "./trees";
 
 const AllTrees = () => {
   const allTrees = useSelector((state) => state.data.allTrees);
   const currentWorkspace = useSelector((state) => state.data.currentWorkspace);
-  const totalCards = useSelector((state) => state.data.totalCards);
-  const lastCardId = useSelector((state) => state.data.lastCardId);
   const dispatch = useDispatch();
+
+  const [sortedTrees, set_sortedTrees] = useState();
+
+  useEffect(() => {
+    const _sortedTrees = allTrees?.sort((a, b) => a.order - b.order);
+    set_sortedTrees(_sortedTrees);
+  }, [allTrees]);
 
   const fetchTotalCardsANdLastCardId = () => {
     dispatch(getTotalCards(currentWorkspace?._id));
-    getLastCardId(currentWorkspace?._id);
+    dispatch(getLastCardId(currentWorkspace?._id));
   };
 
   useEffect(() => {
-    if (currentWorkspace?._id) {
+    if (currentWorkspace) {
       fetchTotalCardsANdLastCardId();
+      dispatch(getAllBadges(currentWorkspace?._id));
     }
   }, [currentWorkspace]);
 
-  const handleCreateNewCard = (treeId) => {
-    if (lastCardId >= 0) {
-      const cardDetails = {
-        title: "Title",
-        cardId: lastCardId + 1,
-        treeId: treeId,
-        workspaceId: currentWorkspace?._id,
-      };
-
-      dispatch(createNewCard(cardDetails));
-    }
-  };
-
-  const fetchCards = (treeId) => {
-    dispatch(getAllCards(currentWorkspace?._id, treeId));
-  };
-
-  useEffect(() => {
-    if (!allTrees) return;
-
-    allTrees?.forEach((tree) => {
-      fetchCards(tree._id);
-    });
-  }, [allTrees]);
-
   return (
-    <div className="AllTrees">
-      {allTrees?.map((tree) => {
-        return (
-          <div className="Tree" key={tree._id}>
-            <h3>{tree.name}</h3>
-
-            {/* cards */}
-            <AllCards treeId={tree._id} />
-
-            {/* Create Card  */}
-            <button
-              className="create-card-btn"
-              onClick={() => handleCreateNewCard(tree._id)}
-            >
-              Create New Card
-            </button>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <Trees trees={sortedTrees} />
+    </>
   );
 };
 

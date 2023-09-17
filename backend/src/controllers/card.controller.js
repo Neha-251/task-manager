@@ -36,12 +36,13 @@ router.get("/get/totalCards", async (req, res) => {
 router.get("/get/lastCardId", async (req, res) => {
   try {
     const workspaceId = req.query.workspaceId;
-    const lastCard = await Card.getLastInsertedDocument
-      .find({ workspaceId: { $eq: workspaceId } })
+    const cards = await Card.find({ workspaceId: { $eq: workspaceId } })
       .sort({ _id: -1 })
       .limit(1);
 
-    return res.status(200).send({ lastCardId: lastCard.cardId });
+    const lastCardId = cards.length > 0 ? cards[0]?.cardId : 0;
+
+    return res.status(200).send({ lastCardId: lastCardId });
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }
@@ -56,14 +57,38 @@ router.get("/get/single/:id", async (req, res) => {
   }
 });
 
+// router.patch("/update/:id", async (req, res) => {
+//   try {
+//     const card = await Card.findById(req.params.id).lean().exec();
+
+//     if (!card) return res.status(404).send({ message: "Card not found" });
+//     else {
+//       const updatedCard = await Card.findByIdAndUpdate(
+//         req.params.id,
+//         req.body,
+//         {
+//           new: true,
+//         }
+//       );
+//       console.log(
+//         "🚀 ~ file: card.controller.js:79 ~ router.patch ~ updatedCard:",
+//         updatedCard
+//       );
+//       return res.status(200).send(updatedCard);
+//     }
+//   } catch (err) {
+//     return res.status(400).send({ error: err.message });
+//   }
+// });
+
 router.patch("/update/:id", async (req, res) => {
   try {
-    const card = await Card.findByIdAndUpdate(req.params.id, req.body, {
-      new: false,
-    })
-      .lean()
-      .exec();
-    return res.status(200).send(card);
+    const updatedCard = await Card.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    console.log(req.body);
+    return res.send(updatedCard);
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }

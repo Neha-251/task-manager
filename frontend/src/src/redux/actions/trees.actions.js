@@ -1,5 +1,9 @@
 import axios from "axios";
-import { CREATE_NEW_TREE, GET_ALL_TREES } from "../constants/trees.constants";
+import {
+  CREATE_NEW_TREE,
+  GET_ALL_TREES,
+  UPDATE_TREE,
+} from "../constants/trees.constants";
 import {
   setShowLoader,
   setShowToaster,
@@ -17,7 +21,9 @@ export const getAllTrees = (workspaceId) => (dispatch) => {
   dispatch(setShowLoader(true));
 
   axios
-    .get(`http://localhost:5000/trees/get/all?workspaceId=${workspaceId}`)
+    .get(
+      `https://task-manager-backend-teal.vercel.app/trees/get/all?workspaceId=${workspaceId}`
+    )
     .then((res) => {
       dispatch(setAllTrees(res.data));
       dispatch(setShowLoader(false));
@@ -31,7 +37,7 @@ export const createNewTree = (data) => (dispatch) => {
   dispatch(setShowLoader(true));
 
   axios
-    .post("http://localhost:5000/trees/create", data)
+    .post("https://task-manager-backend-teal.vercel.app/trees/create", data)
     .then((res) => {
       dispatch(setShowLoader(false));
       dispatch(
@@ -44,6 +50,27 @@ export const createNewTree = (data) => (dispatch) => {
 
       dispatch({
         type: CREATE_NEW_TREE,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+    });
+};
+
+export const updateTree = (id, data) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .patch(
+      `https://task-manager-backend-teal.vercel.app/trees/update/${id}`,
+      data
+    )
+    .then((res) => {
+      dispatch(setShowLoader(false));
+
+      dispatch({
+        type: UPDATE_TREE,
         payload: res.data,
       });
     })

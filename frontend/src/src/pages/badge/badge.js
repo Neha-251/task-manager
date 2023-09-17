@@ -34,7 +34,7 @@ const Badge = () => {
   });
 
   useEffect(() => {
-    dispatch(getAllBadges(currentWorkspace?._id));
+    if (!allBadges.length) dispatch(getAllBadges(currentWorkspace?._id));
   }, []);
 
   const handleColorEdit = (badgeId) => {

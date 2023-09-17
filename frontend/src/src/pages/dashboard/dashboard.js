@@ -32,11 +32,15 @@ const Dashboard = () => {
   };
 
   const handleEditWorkspace = (workspaceName, workspaceDescription) => {
+    if (workspaceName === lastClickedWorkspace?.name) {
+      set_showModal(false);
+      return;
+    }
     const data = {
       title: workspaceName,
       description: workspaceDescription,
     };
-    dispatch(updateWorkspace(lastClickedWorkspaceId, data));
+    dispatch(updateWorkspace(lastClickedWorkspace?._id, data));
     set_showModal(false);
   };
 
@@ -58,17 +62,17 @@ const Dashboard = () => {
     defDesc: "",
     btnText: "",
   });
-  const [lastClickedWorkspaceId, set_lastClickedWorkspaceId] = useState();
+  const [lastClickedWorkspace, set_lastClickedWorkspace] = useState();
 
   const handleEditBtnClick = (e, workspace) => {
     e.stopPropagation();
     set_modalDetails({
       defName: workspace.title,
       defDesc: workspace.description,
-      btnText: "Edit",
+      btnText: "Update",
     });
     set_showModal(true);
-    set_lastClickedWorkspaceId(workspace._id);
+    set_lastClickedWorkspace(workspace);
   };
 
   const handleCreateBtnClick = () => {
@@ -89,7 +93,7 @@ const Dashboard = () => {
           onBtnClick={(e, action, workspaceName, description) => {
             if (action === "Create")
               handleCreateWorkspace(workspaceName, description);
-            else if (action === "Edit") {
+            else if (action === "Update") {
               handleEditWorkspace(workspaceName, description);
             } else set_showModal(false);
           }}

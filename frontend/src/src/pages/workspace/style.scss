@@ -56,12 +56,32 @@ nav {
     height: 100%;
     overflow-y: auto;
 
-    h3 {
+    .tree-header {
       text-align: center;
       color: $color-bg-primary-light;
       background-color: $color-secondary-light;
       padding: 10px;
       margin: 0;
+
+      h3 {
+        margin: 0%;
+      }
+      .dark-icon {
+        top: 5px;
+        right: 5px;
+
+        &:hover {
+          color: $color-bg-primary-light;
+        }
+      }
+
+      input {
+        max-width: 90%;
+      }
+
+      button {
+        padding: 5px 10px !important;
+      }
     }
 
     .create-card-btn {

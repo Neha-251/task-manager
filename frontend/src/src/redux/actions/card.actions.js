@@ -3,8 +3,10 @@ import {
   CREATE_NEW_CARD,
   DELETE_CARD,
   GET_ALL_CARDS,
+  GET_CARD,
   GET_LAST_CARD_ID,
   GET_TOTAL_CARDS,
+  UPDATE_CARD,
 } from "../constants/card.constants";
 import {
   setShowLoader,
@@ -17,7 +19,7 @@ export const getAllCards = (workspaceId, treeId) => (dispatch) => {
 
   axios
     .get(
-      `http://localhost:5000/cards/get/all?workspaceId=${workspaceId}&treeId=${treeId}`
+      `https://task-manager-backend-teal.vercel.app/cards/get/all?workspaceId=${workspaceId}&treeId=${treeId}`
     )
     .then((res) => {
       dispatch(setShowLoader(false));
@@ -35,7 +37,7 @@ export const createNewCard = (data) => (dispatch) => {
   dispatch(setShowLoader(true));
 
   axios
-    .post("http://localhost:5000/cards/create", data)
+    .post("https://task-manager-backend-teal.vercel.app/cards/create", data)
     .then((res) => {
       dispatch(setShowLoader(false));
 
@@ -54,7 +56,7 @@ export const getTotalCards = (workspaceId) => (dispatch) => {
 
   axios
     .get(
-      `http://localhost:5000/cards/get/totalCards?workspaceId=${workspaceId}`
+      `https://task-manager-backend-teal.vercel.app/cards/get/totalCards?workspaceId=${workspaceId}`
     )
     .then((res) => {
       dispatch(setShowLoader(false));
@@ -74,14 +76,14 @@ export const getLastCardId = (workspaceId) => (dispatch) => {
 
   axios
     .get(
-      `http://localhost:5000/cards/get/lastCardId?workspaceId=${workspaceId}`
+      `https://task-manager-backend-teal.vercel.app/cards/get/lastCardId?workspaceId=${workspaceId}`
     )
     .then((res) => {
       dispatch(setShowLoader(false));
 
       dispatch({
         type: GET_LAST_CARD_ID,
-        payload: res.data.lastCardId,
+        payload: +res.data.lastCardId,
       });
     })
     .catch((err) => {
@@ -93,7 +95,7 @@ export const deleteCard = (id, treeId) => (dispatch) => {
   dispatch(setShowLoader(true));
 
   axios
-    .delete(`http://localhost:5000/cards/delete/${id}`)
+    .delete(`https://task-manager-backend-teal.vercel.app/cards/delete/${id}`)
     .then((res) => {
       dispatch(setShowLoader(false));
       dispatch(setToasterError({ type: "success", message: res.data.message }));
@@ -106,4 +108,48 @@ export const deleteCard = (id, treeId) => (dispatch) => {
     .catch((err) => {
       dispatch(setShowLoader(false));
     });
+};
+
+export const getCard = (id) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  axios
+    .get(`https://task-manager-backend-teal.vercel.app/cards/get/single/${id}`)
+    .then((res) => {
+      dispatch(setShowLoader(false));
+      dispatch({ type: GET_CARD, payload: res.data });
+    })
+    .catch((err) => {
+      dispatch(setShowLoader(false));
+    });
+};
+
+export const updateCard = (id, data) => (dispatch) => {
+  dispatch(setShowLoader(true));
+
+  fetch(`https://task-manager-backend-teal.vercel.app/cards/update/${id}`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "PATCH",
+
+    // Fields that to be updated are passed
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      dispatch(setShowLoader(false));
+      dispatch(
+        setToasterError({
+          type: "success",
+          message: "Card updated successfully",
+        })
+      );
+      dispatch(setShowToaster(true));
+      dispatch({
+        type: UPDATE_CARD,
+        payload: { treeId: data.treeId, data: res.data },
+      });
+    })
+    .catch((err) => console.log(err));
 };

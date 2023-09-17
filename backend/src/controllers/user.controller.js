@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
 
     const existingUser = await User.find({ email: { $eq: req.body.email } });
 
-    if (existingUser) {
+    if (existingUser[0]) {
       return res
         .status(401)
         .send({ message: "Email is already registered. Please Login" });

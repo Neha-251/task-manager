@@ -38,7 +38,7 @@ function App() {
 
   return (
     <>
-      <MainNav />
+      {userId ? <MainNav /> : null}
 
       {showLoader ? <Loader /> : null}
       {showToaster ? <Toaster /> : null}

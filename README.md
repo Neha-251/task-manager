@@ -13,7 +13,7 @@
 ## Create colorful badges to set priority to your cards, or this can even make your cards more eye-catchy
 ![badges](https://github.com/Neha-251/task-manager/assets/96072906/2f8a0d95-cd2f-41a8-a9db-457988010859)
 
-## Create, organize, edit cards as per your choice
+## Create, organize, edit cards as per your choice, drag and drop to re-organize trees
 ![workspace](https://github.com/Neha-251/task-manager/assets/96072906/da168213-043f-4f8c-81ea-ab7eb62125a3)
 
 
